@@ -5,11 +5,16 @@
 
 using namespace std;
 
+static const int DEFAULT_CAP = 25;
+
 template<class T> class MagicBag
 {
 public:
 
 	MagicBag() {
+		capacity = DEFAULT_CAP;
+		size = 0;
+		bag = new T[capacity];
 	}
 	
 	// Copy constructor
@@ -17,15 +22,15 @@ public:
 		*this = copy;
 	}
 	
-	// Override the = operator (Copy constructor)
+	// Override the = operator
 	MagicBag& operator=(const MagicBag& other) {
 		// Set other's capacity, size, & bag to this's
-		capacity = other.capacity;
 		size = other.size;
-		bag = new T[capacity];
+		capacity = other.capacity;
+		bag = new T[size];
 
 		// Copy items of original bag into resized bag
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < capacity; i++) {
 			other.bag[i] = this->bag[i];
 		}
 
@@ -37,21 +42,21 @@ public:
 		delete[] bag;
 	}
 
-	// Inserts an item into the MagicBag. If bag is full, increases size of bag.
+	// Inserts an item into the MagicBag. If bag is full, increases capacity of bag.
 	void insert(T item) {
 		// If capacity = size, then bag is full.
-		if (capacity == size)
-			resize(size * 2);
+		if (size == capacity)
+			resize(capacity * 2);
 
-		// Add item to bag, increase capacity by 1
-		bag[capacity] = item;
-		capacity++;
+		// Add item to bag, increase size by 1
+		bag[size] = item;
+		size++;
 	}
 
 	// Removes a random item from the bag. If bag is empty, throws an exception.
 	T draw() {
 		// Throws an exception if bag is empty
-		if (capacity == 0) {
+		if (size == 0) {
 			throw(out_of_range(0));
 			cout << "ERROR: There are no items in the bag.";
 			abort();
@@ -60,14 +65,14 @@ public:
 		// Generate random number, go to that location in the bag, and return that item
 		int randnum;
 		srand((unsigned int)time(NULL));
-		randnum = rand() % capacity + 1;
+		randnum = rand() % size + 1;
 
 		// Get random item
 		T drawThis = bag[randnum - 1];
 		// Overwrite item in random location with last item in bag
-		bag[randnum - 1] = bag[capacity - 1];
+		bag[randnum - 1] = bag[size - 1];
 		// Update number of items in bag counter
-		capacity--;
+		size--;
 
 		// Return the removed item
 		return drawThis;
@@ -78,7 +83,7 @@ public:
 		int inBag = 0;
 
 		// Iterate through the bag, searching for item
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < capacity; i++) {
 			if (bag[i] == item)
 				inBag++;
 		}
@@ -89,16 +94,16 @@ public:
 
 private:
 
-	//Private variables: MagicBag itself, capacity (actual # of items in bag), size (how many items COULD be in bag)
+	//Private variables: MagicBag itself, capacity (max # of items in bag), size (actual # of items in bag)
 	T* bag;
-	int capacity;
 	int size;
+	int capacity;
 
-	// Resizes the bag, increasing the size in case bag is full
-	void resize(int newSize) {
-		// Update size and create empty bag in larger size
-		size = newSize;
-		T* newBag = new T[newSize];
+	// Resizes the bag, increasing the capacity in case bag is full
+	void resize(int newCap) {
+		// Update capacity and create empty bag in larger size
+		capacity = newCap;
+		T* newBag = new T[newCap];
 
 		// Copy items of original bag into resized bag
 		for (int i = 0; i < size; i++) {
@@ -113,10 +118,10 @@ private:
 	// Format: [item0, item1, item2, item3,...]
 	friend ostream& operator<<(ostream& os, const MagicBag& mb) {
 		os << "[";
-		for (int i = 0; i < mb.capacity - 1; i++) {
+		for (int i = 0; i < mb.size - 1; i++) {
 			os << mb.bag[i] << ", ";
 		}
-		os << mb.bag[mb.capacity] << "]";
+		os << mb.bag[mb.size] << "]";
 		return os;
 	}
 };
