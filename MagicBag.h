@@ -10,7 +10,8 @@ static const int DEFAULT_CAP = 25;
 template<class T> class MagicBag
 {
 public:
-
+	
+	// Empty constructor (default capacity and size = 0)
 	MagicBag() {
 		capacity = DEFAULT_CAP;
 		size = 0;
@@ -45,8 +46,9 @@ public:
 	// Inserts an item into the MagicBag. If bag is full, increases capacity of bag.
 	void insert(T item) {
 		// If capacity = size, then bag is full.
-		if (size == capacity)
+		if (size == capacity) {
 			resize(capacity * 2);
+		}
 
 		// Add item to bag, increase size by 1
 		bag[size] = item;
@@ -115,13 +117,13 @@ private:
 	}
 
 	// Overwrite << operator to print contents of MagicBag
-	// Format: [item0, item1, item2, item3,...]
+	// Format: [item0 item1 item2 item3...]
 	friend ostream& operator<<(ostream& os, const MagicBag& mb) {
 		os << "[";
-		for (int i = 0; i < mb.size - 1; i++) {
-			os << mb.bag[i] << ", ";
+		for (int i = 0; i < mb.size; i++) {
+			os << mb.bag[i] << " ";
 		}
-		os << mb.bag[mb.size] << "]";
+		os << "]";
 		return os;
 	}
 };
