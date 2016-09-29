@@ -25,7 +25,7 @@ int main() {
 
 	int itemDrawn = mb1.draw();
 	cout << "A " << itemDrawn << " was drawn from the bag." << endl << endl;
-
+	
 	cout << "The number of ones in the bag is " << mb1.peek(1) << endl;
 	cout << "The number of twos in the bag is " << mb1.peek(2) << endl;
 	cout << "The number of three in the bag is " << mb1.peek(3) << endl;

@@ -11,7 +11,7 @@ template<class T> class MagicBag
 {
 public:
 	
-	// Empty constructor (default capacity and size = 0)
+	// Empty constructor (capacity = default capacity and size = 0)
 	MagicBag() {
 		capacity = DEFAULT_CAP;
 		size = 0;
@@ -28,11 +28,11 @@ public:
 		// Set other's capacity, size, & bag to this's
 		size = other.size;
 		capacity = other.capacity;
-		bag = new T[size];
+		bag = new T[capacity];
 
 		// Copy items of original bag into resized bag
-		for (int i = 0; i < capacity; i++) {
-			other.bag[i] = this->bag[i];
+		for (int i = 0; i < size; i++) {
+			this->bag[i] = other.bag[i];
 		}
 
 		return *this;
@@ -85,7 +85,7 @@ public:
 		int inBag = 0;
 
 		// Iterate through the bag, searching for item
-		for (int i = 0; i < capacity; i++) {
+		for (int i = 0; i < size; i++) {
 			if (bag[i] == item)
 				inBag++;
 		}
